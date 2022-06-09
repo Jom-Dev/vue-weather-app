@@ -74,7 +74,6 @@ body {
 #app {
     background-image: url('./assets/default-bg.jpg');
     background-size: cover;
-    /* background-position: bottom; */
     transition: 0.4s;
 }
 
@@ -90,10 +89,15 @@ body {
     background-image: url('./assets/rain-bg.jpg');
 }
 
+#app.mist {
+    background-image: url('./assets/mist-bg.jpg');
+}
+
+
 main {
     min-height: 100vh;
     padding: 25px;
-    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.75));
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.50));
 }
 
 .search-box {
