@@ -11,7 +11,7 @@
                 >
             </div>
 
-            <div class="weather-wrap" v-if="typeof weather.main != 'undefined'">
+            <div class="weather-wrap" v-if="hasLoaded">
                 <div class="location-box">
                     <div class="location">{{ weather.name }}, {{ weather.sys.country }}</div>
                     <div class="date">{{ dateBuilder() }}</div>
@@ -32,24 +32,26 @@ import moment from 'moment'
 
 const api_key = '4bfc4f56a26687c029faae1f9cab2127'
 const url_base = 'https://api.openweathermap.org/data/2.5/'
-const weather = ref('')
 const query = ref('')
+const weather = ref('')
 
+const hasLoaded = computed(() => {
+    return typeof weather.value.main != 'undefined' ? true : false;
+})
 const bg_image = computed(() => {
-    return typeof weather.value.main != 'undefined' ? weather.value.weather[0].main.toLowerCase() : ''
+    return hasLoaded.value ? weather.value.weather[0].main.toLowerCase() : ''
 })
 
 function fetchWeather(e) {
-    if (e.key == "Enter") {
-        fetch(`${url_base}weather?q=${query.value}&units=metric&APPID=${api_key}`)
-        .then(res => {
-            return res.json()
-        }).then(setResults)
-    }
+    if (e.key != 'Enter' || query.value == '') return
+    // to improve, handle 404 not found
+    fetch(`${url_base}weather?q=${query.value}&units=metric&APPID=${api_key}`)
+    .then(res => {
+        return res.json()
+    }).catch(setResults)
 }
 
 function setResults(results) {
-    console.log(results)
     weather.value = results
 }
 
@@ -57,7 +59,6 @@ function dateBuilder() {
     let d = new Date()
     return moment(d).format('dddd D MMMM YYYY')
 }
-
 </script>
 
 <style>
@@ -92,7 +93,6 @@ body {
 #app.mist {
     background-image: url('./assets/mist-bg.jpg');
 }
-
 
 main {
     min-height: 100vh;
