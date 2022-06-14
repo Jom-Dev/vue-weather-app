@@ -48,7 +48,7 @@ function fetchWeather(e) {
     fetch(`${url_base}weather?q=${query.value}&units=metric&APPID=${api_key}`)
     .then(res => {
         return res.json()
-    }).catch(setResults)
+    }).then(setResults)
 }
 
 function setResults(results) {
